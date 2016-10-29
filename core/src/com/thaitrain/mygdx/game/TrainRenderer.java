@@ -1,5 +1,6 @@
 package com.thaitrain.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -22,6 +23,8 @@ public class TrainRenderer {
 		batch.begin();
         batch.draw(trainImg, (int)train.getPosition().x, (int)train.getPosition().y);
         batch.end();
+        System.out.println(Gdx.input.getX());
+        System.out.println(Gdx.input.getY());
     }
 
 }

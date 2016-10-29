@@ -8,7 +8,7 @@ public class World {
 	World(ThaitrainGame thaitrainGame){
 		
 		this.thaitrainGame = thaitrainGame;
-		train = new Train(500,500);
+		train = new Train(860,194);
 		}
 	
 	Train getTrain() {

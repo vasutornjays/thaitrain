@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ThaitrainGame extends Game {
 	public SpriteBatch batch;
-	public static final int HEIGHT = 900;
-    public static final int WIDTH = 1200;
+	public static final int HEIGHT = 525;
+    public static final int WIDTH = 1017;
 	
 	@Override
 	public void create () {
