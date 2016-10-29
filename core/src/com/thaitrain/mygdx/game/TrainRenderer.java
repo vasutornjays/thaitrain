@@ -12,7 +12,7 @@ public class TrainRenderer {
 	
 	public TrainRenderer(ThaitrainGame thaitrainGame,World world){
 		
-		trainImg = new Texture("testtrain.png");
+		trainImg = new Texture("TRAIN01.png");
 		this.thaitrainGame = thaitrainGame;
 		train = world.getTrain();
 	}
