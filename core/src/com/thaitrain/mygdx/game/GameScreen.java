@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter {
 	
@@ -16,12 +18,17 @@ public class GameScreen extends ScreenAdapter {
 	World world;
 	private WorldRenderer worldRenderer;
 	static Vector2 mousepress;
+	boolean isClick = false;
+	Lever leverTop;
+	Lever leverDown;
 	
 	public GameScreen(ThaitrainGame thaitrainGame){
 		this.thaitrainGame = thaitrainGame;
 		world = new World(thaitrainGame);
 		worldRenderer = new WorldRenderer(thaitrainGame,world);
 		train = world.getTrain();
+		leverTop = world.getLeverTop();
+		leverDown = world.getLeverDown();
 	}
 	
 	@Override
@@ -29,16 +36,45 @@ public class GameScreen extends ScreenAdapter {
     	update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-        	train.stage = 1;
-        }
- 
+        click();
         worldRenderer.render(delta);
     }
 	
 	private void update(float delta) {
     	world.update(delta);
     }
+	
+	public void click() {
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !isClick) {
+        	isClick = true;
+        }
+        if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isClick) {
+        	isClick = false;
+        	if(checkTagetClick(train.getClickBox()) && train.currentStage() == 0){
+        		train.stage = 1;
+        	}
+        	else if(checkTagetClick(train.getClickBox()) && leverTop.Leverposition){
+        		train.stage = 2;
+        	}
+        	else if(checkTagetClick(train.getClickBox()) && !leverTop.Leverposition){
+        		train.stage = 3;
+        	}
+        	if(checkTagetClick(leverTop.getClickBox())){
+        		leverTop.Clicked();
+        	}
+        	if(checkTagetClick(leverDown.getClickBox())){
+        		leverDown.Clicked();
+        	}
+        }
+	}
+	
+	private boolean checkTagetClick(Rectangle Taget) {
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), -Gdx.input.getY() + 522, 0);
+
+        if (Taget.contains(touchPos.x, touchPos.y))
+            return true;
+        else
+            return false;
+	}
 
 }
