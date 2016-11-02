@@ -13,7 +13,7 @@ public class World {
 		arriveTrain = new ArriveTrain();
 		arriveTrain.addTrain("one",1,2);
 		arriveTrain.addTrain("two",2,1);
-		leverTop = new Lever(0,0);
+		leverTop = new Lever(592,317);
 		leverDown = new Lever(0,122);
 		}
 	

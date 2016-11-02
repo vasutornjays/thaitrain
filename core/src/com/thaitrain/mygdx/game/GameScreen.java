@@ -61,14 +61,27 @@ public class GameScreen extends ScreenAdapter {
         	isClick = false;
         	
         	for(int i = 0;i<arrivetrain.getSize();i++) {
-        		if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0){
-        			arrivetrain.getTrainAtIndex(i).stage = 1;
+        		if(arrivetrain.getTrainAtIndex(i).WAY == 1){
+        			if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0){
+        				arrivetrain.getTrainAtIndex(i).stage = 1;
+        			}
+        			else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverDown.Leverposition){
+        				arrivetrain.getTrainAtIndex(i).stage = 2;
+        			}
+        			else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverDown.Leverposition){
+        				arrivetrain.getTrainAtIndex(i).stage = 3;
+        			}
         		}
-        		else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverTop.Leverposition){
-        			arrivetrain.getTrainAtIndex(i).stage = 2;
-        		}
-        		else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverTop.Leverposition){
-        			arrivetrain.getTrainAtIndex(i).stage = 3;
+        		if(arrivetrain.getTrainAtIndex(i).WAY == 2){
+        			if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0){
+        				arrivetrain.getTrainAtIndex(i).stage = 1;
+        			}
+        			else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverTop.Leverposition){
+        				arrivetrain.getTrainAtIndex(i).stage = 2;
+        			}
+        			else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverTop.Leverposition){
+        				arrivetrain.getTrainAtIndex(i).stage = 3;
+        			}
         		}
         	}
         	if(checkTagetClick(leverTop.getClickBox())){

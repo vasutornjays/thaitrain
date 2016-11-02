@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Train {
 	Texture trainImg;
+	Texture trainImgTurn;
 	private Vector2 position;
 	private Rectangle clickBox;
 	int stage = 0; 
@@ -14,16 +15,20 @@ public class Train {
 	static int AT_DEPART = 2;
 	static int AT_CARGO = 3;
 	static int FIN = 4;
+	static int AT_TURNPOINT = 5;
 	static int STARTDOWNX = 860;
 	static int STARTDOWNY = 180;
 	static int STARTTOPX = 0;
 	static int STARTTOPY = 320;
+	boolean CANGOTOCARGO = false;
 	int  PLATFORM_X;
 	int DEPART_X;
 	int CARGO_X;
 	int  PLATFORM_Y;
 	int DEPART_Y;
 	int CARGO_Y;
+	int TURNPOINT_X;
+	int TURNPOINT_Y;
 	float TRAIN_SPEED; 		
 	int RIGHTWAY;
 	int WAY;
@@ -37,15 +42,18 @@ public class Train {
 			clickBox = new Rectangle(STARTDOWNX,STARTDOWNY,150,50);
 			PLATFORM_X = 400;
 			DEPART_X = -150;
-			CARGO_X = 400;
-			CARGO_Y = 0;
+			TURNPOINT_X = 200;
+			CARGO_X = 100;
+			CARGO_Y = 20;
 			if(type == 1){
 				trainImg = new Texture("TRAIN01.png");
+				trainImgTurn = new Texture("badlogic.jpg");
 				RIGHTWAY = AT_DEPART;
 				TRAIN_SPEED = (float) 1.5;
 			}
 			else if(type == 2){
 				trainImg = new Texture("TRAIN02.png");
+				trainImgTurn = new Texture("badlogic.jpg");
 				RIGHTWAY = AT_CARGO;
 				TRAIN_SPEED = (float) 1.0;
 			}
@@ -55,15 +63,18 @@ public class Train {
 			clickBox = new Rectangle(STARTTOPX,STARTTOPY,150,50);
 			PLATFORM_X = 400;
 			DEPART_X = 800;
-			CARGO_X = 400;
+			TURNPOINT_X = 600;
+			CARGO_X = 700;
 			CARGO_Y = 500;
 			if(type == 1){
 				trainImg = new Texture("TRAIN01.png");
+				trainImgTurn = new Texture("badlogic.jpg");
 				RIGHTWAY = AT_DEPART;
 				TRAIN_SPEED = (float) -1.5;
 			}
 			else if(type == 2){
 				trainImg = new Texture("TRAIN02.png");
+				trainImgTurn = new Texture("badlogic.jpg");
 				RIGHTWAY = AT_CARGO;
 				TRAIN_SPEED = (float) -1.0;
 			}
@@ -113,13 +124,22 @@ public class Train {
 			}
 		}
 		if(stage == AT_CARGO) {
-			if(!positionCheck(AT_CARGO)) {
-				position.y -=TRAIN_SPEED;
-				clickBox.y -=TRAIN_SPEED;
+			if(!positionCheck(AT_CARGO) && CANGOTOCARGO){
+				position.x -= TRAIN_SPEED/2;
+				clickBox.x -= TRAIN_SPEED/2;
+				position.y -= TRAIN_SPEED/2;
+				clickBox.y -= TRAIN_SPEED/2;
 			}
-			if(positionCheck(AT_CARGO))
-			{
+			if(positionCheck(AT_CARGO)) {
 				return AT_CARGO;
+			}
+			if(!positionCheck(AT_TURNPOINT)) {
+				position.x -=TRAIN_SPEED;
+				clickBox.x -=TRAIN_SPEED;
+			}
+			if(positionCheck(AT_TURNPOINT))
+			{
+				CANGOTOCARGO = true;
 			}
 		}
 		return AT_STATION;
@@ -151,6 +171,16 @@ public class Train {
 				}
 				
 			}
+			
+			if(destination == AT_TURNPOINT) {
+				if(position.x > TURNPOINT_X){
+					return false;
+				}
+				else if(position.x <= TURNPOINT_X){
+					return true;
+				}
+			}
+			
 			if(destination == AT_CARGO) {
 				if(position.y > CARGO_Y){
 					return false;
@@ -177,10 +207,18 @@ public class Train {
 				else if(position.x >= DEPART_X){
 					return true;
 				}
-				
 			}
+			if(destination == AT_TURNPOINT) {
+				if(position.x < TURNPOINT_X){
+					return false;
+				}
+				else if(position.x >= TURNPOINT_X){
+					return true;
+				}
+			}
+			
 			if(destination == AT_CARGO) {
-				if(position.y < CARGO_Y){
+				if(position.y <= CARGO_Y){
 					return false;
 				}
 				else if(position.y >= CARGO_Y){

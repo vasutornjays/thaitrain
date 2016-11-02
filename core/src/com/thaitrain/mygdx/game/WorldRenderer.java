@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class WorldRenderer {
 	
 	private ThaitrainGame thaitrainGame;
-	private World world;
 	private TrainRenderer trainRenderer;
 	private Texture BGImg;
 	private Texture LeverRightImg;
@@ -17,8 +16,8 @@ public class WorldRenderer {
 	
 	WorldRenderer(ThaitrainGame thaitrainGame,World world){
 		BGImg = new Texture("MAP01.png");
-		LeverRightImg = new Texture("LeverRigth.png");
-		LeverLeftImg = new Texture("LeverLeft.png");
+		LeverRightImg = new Texture("leverRH.png");
+		LeverLeftImg = new Texture("leverLH.png");
 		this.thaitrainGame = thaitrainGame;
 		trainRenderer = new TrainRenderer(thaitrainGame,world);
 		leverTop = world.getLeverTop();
