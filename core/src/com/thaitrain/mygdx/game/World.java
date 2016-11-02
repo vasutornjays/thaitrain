@@ -3,21 +3,22 @@ package com.thaitrain.mygdx.game;
 public class World {
 	
 	private ThaitrainGame thaitrainGame;
-	private Train train;
-	private Train train2;
 	Lever leverTop;
 	Lever leverDown;
+	private ArriveTrain arriveTrain;
 	
 	World(ThaitrainGame thaitrainGame){
 		
 		this.thaitrainGame = thaitrainGame;
-		train = new Train(860,194);
+		arriveTrain = new ArriveTrain();
+		arriveTrain.addTrain("one", 1, 860, 500);
+		arriveTrain.addTrain("two", 1, 860, 193);
 		leverTop = new Lever(0,0);
 		leverDown = new Lever(0,122);
 		}
 	
-	Train getTrain() {
-		return train;
+	ArriveTrain gettrainArr() {
+		return arriveTrain;
 	}
 	
 	Lever getLeverTop() {
@@ -29,6 +30,6 @@ public class World {
 	}
 
 	public void update(float delta) {
-        train.update();
+        arriveTrain.update();
     }
 }

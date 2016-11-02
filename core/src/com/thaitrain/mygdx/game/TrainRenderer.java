@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class TrainRenderer {
 	
 	private Texture trainImg;
-	private Train train;
+	private ArriveTrain arrivetrain;
 	private ThaitrainGame thaitrainGame;
 	private World world;
 	
@@ -15,13 +15,15 @@ public class TrainRenderer {
 		
 		trainImg = new Texture("TRAIN01.png");
 		this.thaitrainGame = thaitrainGame;
-		train = world.getTrain();
+		arrivetrain = world.gettrainArr();
 	}
 	
 	public void render(float delta) {
 		SpriteBatch batch = thaitrainGame.batch;
 		batch.begin();
-        batch.draw(trainImg, (int)train.getPosition().x, (int)train.getPosition().y);
+		for(int i = 0;i<arrivetrain.getSize();i++) {
+			batch.draw(trainImg, (int)arrivetrain.getTrainAtIndex(i).getPosition().x, (int)arrivetrain.getTrainAtIndex(i).getPosition().y);
+		}
         batch.end();
         System.out.println(Gdx.input.getX());
         System.out.println(Gdx.input.getY());

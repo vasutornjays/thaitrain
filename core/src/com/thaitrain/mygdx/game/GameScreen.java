@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 public class GameScreen extends ScreenAdapter {
 	
 	private ThaitrainGame thaitrainGame;
-	private Train train;
+	private ArriveTrain arrivetrain;
 	World world;
 	private WorldRenderer worldRenderer;
 	static Vector2 mousepress;
@@ -26,7 +26,7 @@ public class GameScreen extends ScreenAdapter {
 		this.thaitrainGame = thaitrainGame;
 		world = new World(thaitrainGame);
 		worldRenderer = new WorldRenderer(thaitrainGame,world);
-		train = world.getTrain();
+		arrivetrain = world.gettrainArr();
 		leverTop = world.getLeverTop();
 		leverDown = world.getLeverDown();
 	}
@@ -50,14 +50,17 @@ public class GameScreen extends ScreenAdapter {
         }
         if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isClick) {
         	isClick = false;
-        	if(checkTagetClick(train.getClickBox()) && train.currentStage() == 0){
-        		train.stage = 1;
-        	}
-        	else if(checkTagetClick(train.getClickBox()) && leverTop.Leverposition){
-        		train.stage = 2;
-        	}
-        	else if(checkTagetClick(train.getClickBox()) && !leverTop.Leverposition){
-        		train.stage = 3;
+        	
+        	for(int i = 0;i<arrivetrain.getSize();i++) {
+        		if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0){
+        			arrivetrain.getTrainAtIndex(i).stage = 1;
+        		}
+        		else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverTop.Leverposition){
+        			arrivetrain.getTrainAtIndex(i).stage = 2;
+        		}
+        		else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverTop.Leverposition){
+        			arrivetrain.getTrainAtIndex(i).stage = 3;
+        		}
         	}
         	if(checkTagetClick(leverTop.getClickBox())){
         		leverTop.Clicked();
