@@ -7,6 +7,14 @@ public class Train {
 	private Vector2 position;
 	private Rectangle clickBox;
 	int stage = 0; 
+	static int AT_STATION = 0;
+	static int AT_PLATFORM = 1;
+	static int AT_DEPART = 2;
+	static int AT_CARGO = 3;
+	static int FIN = 4;
+	static int TRAIN_SPEED = 5;
+	static int DESTINATION = AT_DEPART;
+	
 	
 	public Train(int x,int y){
 		position = new Vector2(x,y);
@@ -33,20 +41,46 @@ public class Train {
 	
 	public void update() {
 		moveTo();
+		Quit();
 	}
 	
-	public void moveTo() {
-		if(stage == 1) {
+	public int moveTo() {
+		if(stage == AT_PLATFORM) {
 			if(position.x > 400) {
-				position.x -= 5;
-				clickBox.x -= 5;
+				position.x -= TRAIN_SPEED;
+				clickBox.x -= TRAIN_SPEED;
+			}
+			if(position.x == 400)
+			{
+				return AT_PLATFORM;
 			}
 		}
-		if(stage == 2) {
+		if(stage == AT_DEPART) {
 			if(position.x > -200) {
-				position.x -= 5;
-				clickBox.x -= 5;
+				position.x -= TRAIN_SPEED;
+				clickBox.x -= TRAIN_SPEED;
 			}
+			if(position.x == -200)
+			{
+				return AT_DEPART;
+			}
+		}
+		if(stage == AT_CARGO) {
+			if(position.y > 0) {
+				position.y -=TRAIN_SPEED;
+				clickBox.y -=TRAIN_SPEED;
+			}
+			if(position.y == 0)
+			{
+				return AT_CARGO;
+			}
+		}
+		return AT_STATION;
+	}
+	
+	public void Quit () {
+		if(moveTo() == DESTINATION) { 
+			stage = FIN;
 		}
 	}
 	
