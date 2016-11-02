@@ -10,8 +10,8 @@ public class ArriveTrain {
 	        trainArr = new ArrayList<Train>();
 	    }
 	 
-	public void addTrain(String TrainName,int type,int x,int y) {
-        trainArr.add(new Train(x,y));
+	public void addTrain(String TrainName,int way,int type) {
+        trainArr.add(new Train(way,type));
     }
 	
 	public ArrayList<Train> gettrainArr() {
