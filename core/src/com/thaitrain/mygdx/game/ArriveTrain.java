@@ -5,13 +5,15 @@ import java.util.ArrayList;
 public class ArriveTrain {
 	
 	private ArrayList<Train> trainArr;
+	private World world;
 	
-	 public ArriveTrain() {
+	 public ArriveTrain(World world) {
 	        trainArr = new ArrayList<Train>();
+	        this.world = world;
 	    }
 	 
 	public void addTrain(String TrainName,int way,int type) {
-        trainArr.add(new Train(way,type));
+        trainArr.add(new Train(way,type,world));
     }
 	
 	public ArrayList<Train> gettrainArr() {

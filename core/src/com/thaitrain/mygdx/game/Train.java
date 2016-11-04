@@ -20,6 +20,7 @@ public class Train {
 	static int STARTDOWNY = 180;
 	static int STARTTOPX = 0;
 	static int STARTTOPY = 320;
+	int DIR;
 	boolean CANGOTOCARGO = false;
 	int  PLATFORM_X;
 	int DEPART_X;
@@ -31,12 +32,18 @@ public class Train {
 	int TURNPOINT_Y;
 	float TRAIN_SPEED; 		
 	int RIGHTWAY;
+	int WRONGWAY;
 	int WAY;
+	int TIME_WAIT;
+	int TIME_PERSONLOAD;
+	int TIME_CARGOLOAD;
+	private World world;
 	
 	
 	
-	public Train(int type,int way){
+	public Train(int type,int way,World world){
 		WAY = way;
+		this.world = world;
 		if(WAY == 1){
 			position = new Vector2(STARTDOWNX,STARTDOWNY);
 			clickBox = new Rectangle(STARTDOWNX,STARTDOWNY,150,50);
@@ -45,18 +52,7 @@ public class Train {
 			TURNPOINT_X = 200;
 			CARGO_X = 100;
 			CARGO_Y = 20;
-			if(type == 1){
-				trainImg = new Texture("TRAIN01.png");
-				trainImgTurn = new Texture("badlogic.jpg");
-				RIGHTWAY = AT_DEPART;
-				TRAIN_SPEED = (float) 1.5;
-			}
-			else if(type == 2){
-				trainImg = new Texture("TRAIN02.png");
-				trainImgTurn = new Texture("badlogic.jpg");
-				RIGHTWAY = AT_CARGO;
-				TRAIN_SPEED = (float) 1.0;
-			}
+			DIR = 1;
 		}
 		if(WAY == 2){
 			position = new Vector2(STARTTOPX,STARTTOPY);
@@ -66,18 +62,27 @@ public class Train {
 			TURNPOINT_X = 600;
 			CARGO_X = 700;
 			CARGO_Y = 500;
-			if(type == 1){
-				trainImg = new Texture("TRAIN01.png");
-				trainImgTurn = new Texture("badlogic.jpg");
-				RIGHTWAY = AT_DEPART;
-				TRAIN_SPEED = (float) -1.5;
-			}
-			else if(type == 2){
-				trainImg = new Texture("TRAIN02.png");
-				trainImgTurn = new Texture("badlogic.jpg");
-				RIGHTWAY = AT_CARGO;
-				TRAIN_SPEED = (float) -1.0;
-			}
+			DIR = -1;
+		}
+		if(type == 1){
+			trainImg = new Texture("trainPass.png");
+			trainImgTurn = new Texture("trainPass.png");
+			RIGHTWAY = AT_DEPART;
+			WRONGWAY = AT_CARGO;
+			TRAIN_SPEED = (float) 1.5 * DIR;
+			TIME_WAIT = 3000;
+			TIME_PERSONLOAD = 500;
+			TIME_CARGOLOAD = 0;
+		}
+		else if(type == 2){
+			trainImg = new Texture("train.png");
+			trainImgTurn = new Texture("train.png");
+			RIGHTWAY = AT_CARGO;
+			WRONGWAY = AT_DEPART;
+			TRAIN_SPEED = (float) 1.0 * DIR;
+			TIME_WAIT = 3000;
+			TIME_PERSONLOAD = 0;
+			TIME_CARGOLOAD = 500;
 		}
 	}
 	
@@ -99,7 +104,11 @@ public class Train {
 	
 	public void update() {
 		moveTo();
-		Quit();
+		quit();
+		TIME_WAIT --;
+		dropPerson();
+		dropCargo();
+		//System.out.println(TIME_WAIT);
 	}
 	
 	public int moveTo() {
@@ -108,7 +117,7 @@ public class Train {
 				position.x -= TRAIN_SPEED;
 				clickBox.x -= TRAIN_SPEED;
 			}
-			if(positionCheck(AT_PLATFORM))
+			if(positionCheck(AT_PLATFORM) && dropPerson())
 			{
 				return AT_PLATFORM;
 			}
@@ -130,7 +139,7 @@ public class Train {
 				position.y -= TRAIN_SPEED/2;
 				clickBox.y -= TRAIN_SPEED/2;
 			}
-			if(positionCheck(AT_CARGO)) {
+			if(positionCheck(AT_CARGO) && dropCargo()) {
 				return AT_CARGO;
 			}
 			if(!positionCheck(AT_TURNPOINT)) {
@@ -145,10 +154,39 @@ public class Train {
 		return AT_STATION;
 	}
 	
-	public void Quit () {
-		if(moveTo() == RIGHTWAY) { 
+	public void quit() {
+		if(moveTo() == WRONGWAY) {
+			world.HP --;
+			System.out.println(world.HP);
 			stage = FIN;
 		}
+		if(moveTo() == RIGHTWAY && (TIME_PERSONLOAD+TIME_CARGOLOAD) <=0 || TIME_WAIT <= 0) { 
+			world.HP ++;
+			System.out.println(world.HP);
+			stage = FIN;
+		}
+	}
+	
+	public boolean dropPerson() {
+		if(positionCheck(AT_PLATFORM)){
+			TIME_PERSONLOAD --;
+			System.out.println(TIME_PERSONLOAD);
+			if(TIME_PERSONLOAD <=0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean dropCargo() {
+		if(positionCheck(AT_CARGO)){
+			TIME_CARGOLOAD --;
+			System.out.println(TIME_CARGOLOAD);
+			if(TIME_CARGOLOAD <=0) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean positionCheck(int destination) {
