@@ -25,13 +25,12 @@ public class ArriveTrain {
 	}
 	
 	public void update() {
-		for(int i = 0;i<trainArr.size();i++)
-		{
+		for(int i = 0;i<trainArr.size();i++) {
 			trainArr.get(i).update();
 		}
 	}
 	
-	public int getSize(){
+	public int getSize() {
 		return trainArr.size();
 	}
 

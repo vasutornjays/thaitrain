@@ -6,7 +6,7 @@ public class World {
 	Lever leverTop;
 	Lever leverDown;
 	private ArriveTrain arriveTrain;
-	int HP = 50;
+	int POINT = 0;
 	
 	World(ThaitrainGame thaitrainGame){
 		

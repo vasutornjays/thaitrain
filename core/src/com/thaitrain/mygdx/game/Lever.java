@@ -15,7 +15,7 @@ public class Lever {
 		clickBox = new Rectangle(x,y,138,46);
 	}
 	
-	public Vector2 getPosition(){
+	public Vector2 getPosition() {
 		return position;
 	}
 	
@@ -23,8 +23,7 @@ public class Lever {
 		return clickBox;
 	}
 	
-	public void Clicked(){
+	public void Clicked() {
 		Leverposition = !Leverposition;
 	}
-			
 }

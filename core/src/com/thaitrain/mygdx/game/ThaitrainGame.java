@@ -9,18 +9,18 @@ public class ThaitrainGame extends Game {
     public static final int WIDTH = 1017;
 	
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
         setScreen(new GameScreen(this));
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
 	}
 	
 	@Override
-	public void dispose () {
+	public void dispose() {
 		batch.dispose();
 	}
 }
