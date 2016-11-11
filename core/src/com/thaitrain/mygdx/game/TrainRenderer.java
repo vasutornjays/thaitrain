@@ -1,6 +1,5 @@
 package com.thaitrain.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -8,12 +7,12 @@ public class TrainRenderer {
 	
 	private ArriveTrain arrivetrain;
 	private ThaitrainGame thaitrainGame;
-	private World world;
 	private Train train;
 	Texture fullHeart;
 	Texture emptyHeart;
 	Texture human;
 	Texture box;
+	static int heartSize = 20;
 	
 	public TrainRenderer(ThaitrainGame thaitrainGame,World world){
 		
@@ -31,53 +30,29 @@ public class TrainRenderer {
 		
 		for(int i = 0;i<arrivetrain.getSize();i++) {
 			train = arrivetrain.getTrainAtIndex(i);
+			int x = (int)train.getPosition().x;
+			int y = (int)train.getPosition().y;
+			int heartPos = 0;
 			if (train.CANGOTOCARGO) {
-				batch.draw(train.trainImgTurn, (int)train.getPosition().x, (int)train.getPosition().y);
+				batch.draw(train.trainImgTurn, x, y);
 			}
 			else {
-				batch.draw(train.trainImg, (int)train.getPosition().x, train.getPosition().y);
+				batch.draw(train.trainImg, x, y);
 			}
-			if (train.HEART == 5) {
-				batch.draw(fullHeart, (int)train.getPosition().x, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+20, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+40, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+60, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+80, (int)train.getPosition().y + 60);
+			for(int j = 0;j<train.HEART;j++) {
+				batch.draw(fullHeart, x + heartPos, y + 60);
+				heartPos += heartSize;
 			}
-			if (train.HEART == 4) {
-				batch.draw(fullHeart, (int)train.getPosition().x, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+20, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+40, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+60, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+80, (int)train.getPosition().y + 60);
-			}
-			if (train.HEART == 3) {
-				batch.draw(fullHeart, (int)train.getPosition().x, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+20, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+40, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+60, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+80, (int)train.getPosition().y + 60);
-			}
-			if (train.HEART == 2) {
-				batch.draw(fullHeart, (int)train.getPosition().x, (int)train.getPosition().y + 60);
-				batch.draw(fullHeart, (int)train.getPosition().x+20, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+40, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+60, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+80, (int)train.getPosition().y + 60);
-			}
-			if (train.HEART == 1) {
-				batch.draw(fullHeart, (int)train.getPosition().x, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+20, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+40, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+60, (int)train.getPosition().y + 60);
-				batch.draw(emptyHeart, (int)train.getPosition().x+80, (int)train.getPosition().y + 60);
+			for(int j = 0;j<5 - train.HEART;j++) {
+				batch.draw(emptyHeart, x + heartPos, y + 60);
+				heartPos += heartSize;
 			}
 			if (train.TIME_PERSONLOAD > 0) {
-				batch.draw(human, (int)train.getPosition().x+100, (int)train.getPosition().y + 60);
+				batch.draw(human, x + 100, y + 60);
 			}
 			if (train.TIME_CARGOLOAD > 0) {
-				batch.draw(box, (int)train.getPosition().x+120, (int)train.getPosition().y + 60);
-			}
+				batch.draw(box, x + 120, y + 60);
+			} 
 		}
         batch.end();
 //        System.out.println(Gdx.input.getX());

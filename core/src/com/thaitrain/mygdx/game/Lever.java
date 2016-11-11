@@ -1,9 +1,7 @@
 package com.thaitrain.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class Lever {
 	private Vector2 position;
