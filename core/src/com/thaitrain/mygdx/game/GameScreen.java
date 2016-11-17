@@ -21,8 +21,10 @@ public class GameScreen extends ScreenAdapter {
 	private Train train;
 	static Vector2 mousepress;
 	boolean isClick = false;
-	Lever leverTop;
-	Lever leverDown;
+	Lever lever1;
+	Lever lever2;
+	Lever lever3;
+	Lever lever4;
 	int nowStage = 2;
 	int PLAY = 0;
 	int PAUSE = 1;
@@ -33,8 +35,10 @@ public class GameScreen extends ScreenAdapter {
 		world = new World(thaitrainGame);
 		worldRenderer = new WorldRenderer(thaitrainGame,world);
 		arrivetrain = world.gettrainArr();
-		leverTop = world.getLeverTop();
-		leverDown = world.getLeverDown();
+		lever1 = world.getLever1();
+		lever2 = world.getLever2();
+		lever3 = world.getLever3();
+		lever4 = world.getLever4();
 	}
 	
 	@Override
@@ -63,27 +67,51 @@ public class GameScreen extends ScreenAdapter {
         		if (train.WAY == 1) {
         			if(checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
         				train.STAGE = 1;
-        			} else if(checkTagetClick(train.getClickBox()) && leverDown.Leverposition && train.dropPerson()) {
+        			} else if(checkTagetClick(train.getClickBox()) && lever1.Leverposition && train.dropPerson()) {
         				train.STAGE = 2;
-        			} else if(checkTagetClick(train.getClickBox()) && !leverDown.Leverposition && train.dropPerson()) {
+        			} else if(checkTagetClick(train.getClickBox()) && !lever1.Leverposition && train.dropPerson()) {
         				train.STAGE = 3;
         			}
         		}
         		if (train.WAY == 2) {
         			if (checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
         				train.STAGE = 1;
-        			} else if (checkTagetClick(train.getClickBox()) && leverTop.Leverposition && train.dropPerson()) {
+        			} else if (checkTagetClick(train.getClickBox()) && lever2.Leverposition && train.dropPerson()) {
         				train.STAGE = 2;
-        			} else if (checkTagetClick(train.getClickBox()) && !leverTop.Leverposition && train.dropPerson()) {
+        			} else if (checkTagetClick(train.getClickBox()) && !lever2.Leverposition && train.dropPerson()) {
+        				train.STAGE = 3;
+        			}
+        		}
+        		if (train.WAY == 3) {
+        			if(checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
+        				train.STAGE = 1;
+        			} else if(checkTagetClick(train.getClickBox()) && lever3.Leverposition && train.dropPerson()) {
+        				train.STAGE = 2;
+        			} else if(checkTagetClick(train.getClickBox()) && !lever3.Leverposition && train.dropPerson()) {
+        				train.STAGE = 3;
+        			}
+        		}
+        		if (train.WAY == 4) {
+        			if (checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
+        				train.STAGE = 1;
+        			} else if (checkTagetClick(train.getClickBox()) && lever4.Leverposition && train.dropPerson()) {
+        				train.STAGE = 2;
+        			} else if (checkTagetClick(train.getClickBox()) && !lever4.Leverposition && train.dropPerson()) {
         				train.STAGE = 3;
         			}
         		}
         	}
-        	if(checkTagetClick(leverTop.getClickBox())) {
-        		leverTop.Clicked();
+        	if(checkTagetClick(lever1.getClickBox())) {
+        		lever1.Clicked();
         	}
-        	if(checkTagetClick(leverDown.getClickBox())) {
-        		leverDown.Clicked();
+        	if(checkTagetClick(lever2.getClickBox())) {
+        		lever2.Clicked();
+        	}
+        	if(checkTagetClick(lever3.getClickBox())) {
+        		lever3.Clicked();
+        	}
+        	if(checkTagetClick(lever4.getClickBox())) {
+        		lever4.Clicked();
         	}
         }
 	}

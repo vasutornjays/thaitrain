@@ -14,8 +14,10 @@ public class Train {
 	static int PERSON_TRAIN = 1;
 	static int CARGO_TRAIN = 2;
 	static int COMBI_TRAIN = 3;
-	static int WAY_DOWN = 1;
-	static int WAY_TOP = 2;
+	static int WAY_1 = 1;
+	static int WAY_2 = 2;
+	static int WAY_3 = 3;
+	static int WAY_4 = 4;
 	static int AT_STATION = 0;
 	static int AT_PLATFORM = 1;
 	static int AT_DEPART = 2;
@@ -46,6 +48,7 @@ public class Train {
 	int TIME_PERSONLOAD;
 	int TIME_CARGOLOAD;
 	int HEART = 5;
+	int map_shift = 510;
 	
 	
 	
@@ -88,27 +91,27 @@ public class Train {
 	}
 	
 	public void setTrainImg() {
-		if (TYPE == PERSON_TRAIN && WAY == WAY_TOP) {
+		if (TYPE == PERSON_TRAIN && (WAY == WAY_1 || WAY == WAY_3)) {
 			trainImg = new Texture("trainPassR.png");
 			trainImgTurn = new Texture("trainPassR.png");
 		}
-		if (TYPE == PERSON_TRAIN && WAY == WAY_DOWN) {
+		if (TYPE == PERSON_TRAIN && (WAY == WAY_2 || WAY == WAY_4)) {
 			trainImg = new Texture("trainPassL.png");
 			trainImgTurn = new Texture("trainPassL.png");
 		}
-		if (TYPE == CARGO_TRAIN && WAY == WAY_TOP) {
+		if (TYPE == CARGO_TRAIN && (WAY == WAY_1 || WAY == WAY_3)) {
 			trainImg = new Texture("trainCargoR.png");
 			trainImgTurn = new Texture("trainCargoR.png");
 		}
-		if (TYPE == CARGO_TRAIN && WAY == WAY_DOWN) {
+		if (TYPE == CARGO_TRAIN && (WAY == WAY_2 || WAY == WAY_4)) {
 			trainImg = new Texture("trainCargoL.png");
 			trainImgTurn = new Texture("trainCargoL.png");
 		}
-		if (TYPE == COMBI_TRAIN && WAY == WAY_TOP) {
+		if (TYPE == COMBI_TRAIN && (WAY == WAY_1 || WAY == WAY_3)) {
 			trainImg = new Texture("trainCombiR.png");
 			trainImgTurn = new Texture("trainCombiR.png");
 		}
-		if (TYPE == COMBI_TRAIN && WAY == WAY_DOWN) {
+		if (TYPE == COMBI_TRAIN && (WAY == WAY_2 || WAY == WAY_4)) {
 			trainImg = new Texture("trainCombiL.png");
 			trainImgTurn = new Texture("trainCombiL.png");
 		}
@@ -116,7 +119,25 @@ public class Train {
 	}
 	
 	public void setTrainChar() {
-		if (WAY == WAY_DOWN) {
+		if (WAY == WAY_2) {
+			position = new Vector2(STARTDOWNX,STARTDOWNY + map_shift);
+			clickBox = new Rectangle(STARTDOWNX,STARTDOWNY + map_shift,150,50);
+			PLATFORM_X = 400;
+			DEPART_X = -150;
+			TURNPOINT_X = 300;
+			CARGO_X = 300;
+			CARGO_Y = 100 + map_shift;
+			DIR = 1;
+		} else if (WAY == WAY_1) {
+			position = new Vector2(STARTTOPX,STARTTOPY + map_shift);
+			clickBox = new Rectangle(STARTTOPX,STARTTOPY + map_shift,150,50);
+			PLATFORM_X = 400;
+			DEPART_X = 800;
+			TURNPOINT_X = 680;
+			CARGO_X = 680;
+			CARGO_Y = 300 + map_shift;
+			DIR = -1;
+		} else if (WAY == WAY_4) {
 			position = new Vector2(STARTDOWNX,STARTDOWNY);
 			clickBox = new Rectangle(STARTDOWNX,STARTDOWNY,150,50);
 			PLATFORM_X = 400;
@@ -125,7 +146,7 @@ public class Train {
 			CARGO_X = 300;
 			CARGO_Y = 100;
 			DIR = 1;
-		} else if (WAY == WAY_TOP) {
+		} else if (WAY == WAY_3) {
 			position = new Vector2(STARTTOPX,STARTTOPY);
 			clickBox = new Rectangle(STARTTOPX,STARTTOPY,150,50);
 			PLATFORM_X = 400;
@@ -170,40 +191,40 @@ public class Train {
 	
 	public int moveTo() {
 		if (STAGE == AT_PLATFORM) {
-			if(!positionCheck(AT_PLATFORM)) {
+			if(!Gamelogic.positionCheck(AT_PLATFORM,this,WAY)) {
 				position.x -= TRAIN_SPEED;
 				clickBox.x -= TRAIN_SPEED;
 			}
-			if(positionCheck(AT_PLATFORM) && dropPerson())
+			if(Gamelogic.positionCheck(AT_PLATFORM,this,WAY) && dropPerson())
 			{
 				return AT_PLATFORM;
 			}
 		}
 		if (STAGE == AT_DEPART) {
-			if (!positionCheck(AT_DEPART)) {
+			if (!Gamelogic.positionCheck(AT_DEPART,this,WAY)) {
 				position.x -= TRAIN_SPEED;
 				clickBox.x -= TRAIN_SPEED;
 			}
-			if (positionCheck(AT_DEPART))
+			if (Gamelogic.positionCheck(AT_DEPART,this,WAY))
 			{
 				return AT_DEPART;
 			}
 		}
 		if (STAGE == AT_CARGO) {
-			if (!positionCheck(AT_CARGO) && CANGOTOCARGO) {
+			if (!Gamelogic.positionCheck(AT_CARGO,this,WAY) && CANGOTOCARGO) {
 				position.x -= TRAIN_SPEED/2;
 				clickBox.x -= TRAIN_SPEED/2;
 				position.y -= TRAIN_SPEED/2;
 				clickBox.y -= TRAIN_SPEED/2;
 			}
-			if (positionCheck(AT_CARGO) && dropCargo()) {
+			if (Gamelogic.positionCheck(AT_CARGO,this,WAY) && dropCargo()) {
 				return AT_CARGO;
 			}
-			if (!positionCheck(AT_TURNPOINT)) {
+			if (!Gamelogic.positionCheck(AT_TURNPOINT,this,WAY)) {
 				position.x -=TRAIN_SPEED;
 				clickBox.x -=TRAIN_SPEED;
 			}
-			if (positionCheck(AT_TURNPOINT)) {
+			if (Gamelogic.positionCheck(AT_TURNPOINT,this,WAY)) {
 				CANGOTOCARGO = true;
 			}
 		}
@@ -234,20 +255,17 @@ public class Train {
 	public void quit() {
 		if (moveTo() == RIGHTWAY && (TIME_PERSONLOAD+TIME_CARGOLOAD) <=0) { 
 			world.POINT++ ;
-			//System.out.println(world.POINT);
 			STAGE = FIN;
 		}
 		else if (moveTo() == WRONGWAY || TIME_NOW <= 0) {
 			STAGE = FIN;
 			world.LIFE = world.LIFE - 1;
-			System.out.println(world.LIFE);
 		}
 	}
 	
 	public boolean dropPerson() {
-		if (positionCheck(AT_PLATFORM)) {
+		if (Gamelogic.positionCheck(AT_PLATFORM,this,WAY)) {
 			TIME_PERSONLOAD--;
-			//System.out.println(TIME_PERSONLOAD);
 			if (TIME_PERSONLOAD <=0) {
 				return true;
 			}
@@ -256,7 +274,7 @@ public class Train {
 	}
 	
 	public boolean dropCargo() {
-		if (positionCheck(AT_CARGO)) {
+		if (Gamelogic.positionCheck(AT_CARGO,this,WAY)) {
 			TIME_CARGOLOAD--;
 			//System.out.println(TIME_CARGOLOAD);
 			if (TIME_CARGOLOAD <=0) {
@@ -266,68 +284,4 @@ public class Train {
 		return false;
 	}
 	
-	public boolean positionCheck(int destination) {
-		if (WAY == 1) {
-			if (destination == AT_PLATFORM) {
-				if (position.x > PLATFORM_X) {
-					return false;
-				} else if (position.x <= PLATFORM_X) {
-					return true;
-				}
-			}
-			if (destination == AT_DEPART) {
-				if (position.x > DEPART_X) {
-					return false;
-				} else if (position.x <= DEPART_X) {
-					return true;
-				}
-			}
-			if (destination == AT_TURNPOINT) {
-				if (position.x > TURNPOINT_X) {
-					return false;
-				}
-				else if (position.x <= TURNPOINT_X) {
-					return true;
-				}
-			}
-			if (destination == AT_CARGO) {
-				if (position.y > CARGO_Y) {
-					return false;
-				} else if(position.y <= CARGO_Y) {
-					return true;
-				}	
-			}
-		}
-		if (WAY == 2) {
-			if (destination == AT_PLATFORM) {
-				if (position.x < PLATFORM_X) {
-					return false;
-				} else if (position.x >= PLATFORM_X) {
-					return true;
-				}
-			}
-			if (destination == AT_DEPART) {
-				if (position.x < DEPART_X) {
-					return false;
-				} else if (position.x >= DEPART_X) {
-					return true;
-				}
-			}
-			if (destination == AT_TURNPOINT) {
-				if (position.x < TURNPOINT_X) {
-					return false;
-				} else if (position.x >= TURNPOINT_X) {
-					return true;
-				}
-			}
-			if (destination == AT_CARGO) {
-				if (position.y <= CARGO_Y) {
-					return false;
-				} else if (position.y >= CARGO_Y) {
-					return true;
-				}	
-			}
-		}
-		return false;
-	}
 }

@@ -13,8 +13,10 @@ public class WorldRenderer {
 	private Texture leverRightImg;
 	private Texture leverLeftImg;
 	private Texture money;
-	private Lever leverTop;
-	private Lever leverDown;
+	Lever lever1;
+	Lever lever2;
+	Lever lever3;
+	Lever lever4;
 	BitmapFont scoreBitmap;
 	private World world;
 	String pointrender;
@@ -28,8 +30,10 @@ public class WorldRenderer {
 		money = new Texture("money.png");
 		this.thaitrainGame = thaitrainGame;
 		trainRenderer = new TrainRenderer(thaitrainGame,world);
-		leverTop = world.getLeverTop();
-		leverDown = world.getLeverDown();
+		lever1 = world.getLever1();
+		lever2 = world.getLever2();
+		lever3 = world.getLever3();
+		lever4 = world.getLever4();
 		scoreBitmap = new BitmapFont();
 	}
 
@@ -37,17 +41,29 @@ public class WorldRenderer {
 		SpriteBatch batch = thaitrainGame.batch;
 		batch.begin();
 		batch.draw(BGImg,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		if (leverTop.Leverposition) {
-			batch.draw(leverRightImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
+		if (lever1.Leverposition) {
+			batch.draw(leverRightImg,(int)lever1.getPosition().x,(int)lever1.getPosition().y);
 		}
 		else {
-			batch.draw(leverLeftImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
+			batch.draw(leverLeftImg,(int)lever1.getPosition().x,(int)lever1.getPosition().y);
 		}
-		if (leverDown.Leverposition) {
-			batch.draw(leverRightImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
+		if (lever2.Leverposition) {
+			batch.draw(leverRightImg,(int)lever2.getPosition().x,(int)lever2.getPosition().y);
 		}
 		else {
-			batch.draw(leverLeftImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
+			batch.draw(leverLeftImg,(int)lever2.getPosition().x,(int)lever2.getPosition().y);
+		}
+		if (lever3.Leverposition) {
+			batch.draw(leverRightImg,(int)lever3.getPosition().x,(int)lever3.getPosition().y);
+		}
+		else {
+			batch.draw(leverLeftImg,(int)lever3.getPosition().x,(int)lever3.getPosition().y);
+		}
+		if (lever4.Leverposition) {
+			batch.draw(leverRightImg,(int)lever4.getPosition().x,(int)lever4.getPosition().y);
+		}
+		else {
+			batch.draw(leverLeftImg,(int)lever4.getPosition().x,(int)lever4.getPosition().y);
 		}
 		for(int i = 0;i<world.LIFE;i++) {
 			batch.draw(money,300 + (i * heartBoxSize),300);

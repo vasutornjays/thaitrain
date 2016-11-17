@@ -37,7 +37,7 @@ public class ThaitrainGame extends Game {
 	}
 	
 	public void pauseGame() {
-		System.out.println("pause");
+		//System.out.println("pause");
     	setScreen(new PauseScreen(this));
 		escPress = true;
 	}
@@ -48,7 +48,6 @@ public class ThaitrainGame extends Game {
 	}
 	
 	public void overGame() {
-		System.out.println("pause");
     	setScreen(new PauseScreen(this));
     	escPress = true;
 	}
