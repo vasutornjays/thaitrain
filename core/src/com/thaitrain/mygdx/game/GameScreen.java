@@ -2,6 +2,7 @@ package com.thaitrain.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,10 +18,15 @@ public class GameScreen extends ScreenAdapter {
 	private ArriveTrain arrivetrain;
 	World world;
 	private WorldRenderer worldRenderer;
+	private Train train;
 	static Vector2 mousepress;
 	boolean isClick = false;
 	Lever leverTop;
 	Lever leverDown;
+	int nowStage = 2;
+	int PLAY = 0;
+	int PAUSE = 1;
+	int GAMEOVER = 2;
 	
 	public GameScreen(ThaitrainGame thaitrainGame) {
 		this.thaitrainGame = thaitrainGame;
@@ -42,6 +48,7 @@ public class GameScreen extends ScreenAdapter {
 	
 	private void update(float delta) {
     	world.update(delta);
+    	pauseCheck();
     }
 	
 	public void click() {
@@ -52,22 +59,23 @@ public class GameScreen extends ScreenAdapter {
         	isClick = false;
         	
         	for(int i = 0;i<arrivetrain.getSize();i++) {
-        		if(arrivetrain.getTrainAtIndex(i).WAY == 1){
-        			if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 1;
-        			} else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverDown.Leverposition && arrivetrain.getTrainAtIndex(i).dropPerson()) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 2;
-        			} else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverDown.Leverposition && arrivetrain.getTrainAtIndex(i).dropPerson()) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 3;
+        		train = arrivetrain.getTrainAtIndex(i);
+        		if (train.WAY == 1) {
+        			if(checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
+        				train.STAGE = 1;
+        			} else if(checkTagetClick(train.getClickBox()) && leverDown.Leverposition && train.dropPerson()) {
+        				train.STAGE = 2;
+        			} else if(checkTagetClick(train.getClickBox()) && !leverDown.Leverposition && train.dropPerson()) {
+        				train.STAGE = 3;
         			}
         		}
-        		if(arrivetrain.getTrainAtIndex(i).WAY == 2){
-        			if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && arrivetrain.getTrainAtIndex(i).currentStage() == 0) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 1;
-        			} else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && leverTop.Leverposition && arrivetrain.getTrainAtIndex(i).dropPerson()) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 2;
-        			} else if(checkTagetClick(arrivetrain.getTrainAtIndex(i).getClickBox()) && !leverTop.Leverposition && arrivetrain.getTrainAtIndex(i).dropPerson()) {
-        				arrivetrain.getTrainAtIndex(i).STAGE = 3;
+        		if (train.WAY == 2) {
+        			if (checkTagetClick(train.getClickBox()) && train.currentStage() == 0) {
+        				train.STAGE = 1;
+        			} else if (checkTagetClick(train.getClickBox()) && leverTop.Leverposition && train.dropPerson()) {
+        				train.STAGE = 2;
+        			} else if (checkTagetClick(train.getClickBox()) && !leverTop.Leverposition && train.dropPerson()) {
+        				train.STAGE = 3;
         			}
         		}
         	}
@@ -80,8 +88,16 @@ public class GameScreen extends ScreenAdapter {
         }
 	}
 	
+	public void pauseCheck(){
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE)&&!thaitrainGame.escPress){
+			thaitrainGame.pauseGame();
+		} else if (thaitrainGame.escPress&&!Gdx.input.isKeyPressed(Keys.ESCAPE))
+			thaitrainGame.escPress = false;
+		
+	}
+	
 	private boolean checkTagetClick(Rectangle Taget) {
-        Vector3 touchPos = new Vector3(Gdx.input.getX(), -Gdx.input.getY() + 522, 0);
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), -Gdx.input.getY() + 1044, 0);
 
         if (Taget.contains(touchPos.x, touchPos.y)) {
             return true;

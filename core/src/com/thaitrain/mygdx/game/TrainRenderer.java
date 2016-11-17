@@ -34,8 +34,24 @@ public class TrainRenderer {
 			int y = (int)train.getPosition().y;
 			int heartPos = 0;
 			if (train.CANGOTOCARGO) {
-				batch.draw(train.trainImgTurn, x, y);
+				batch.draw(train.trainImg, x, y, 0, 0, 150, 50, 1, 1, 40, 0 , 0, 150, 50, false, false);
 			}
+//			draw(Texture texture,
+//	                 float x,
+//	                 float y,
+//	                 float originX,
+//	                 float originY,
+//	                 float width,
+//	                 float height,
+//	                 float scaleX,
+//	                 float scaleY,
+//	                 float rotation,
+//	                 int srcX,
+//	                 int srcY,
+//	                 int srcWidth,
+//	                 int srcHeight,
+//	                 boolean flipX,
+//	                 boolean flipY)
 			else {
 				batch.draw(train.trainImg, x, y);
 			}

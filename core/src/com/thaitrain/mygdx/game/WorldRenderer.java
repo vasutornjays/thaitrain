@@ -10,19 +10,22 @@ public class WorldRenderer {
 	private ThaitrainGame thaitrainGame;
 	private TrainRenderer trainRenderer;
 	private Texture BGImg;
-	private Texture LeverRightImg;
-	private Texture LeverLeftImg;
+	private Texture leverRightImg;
+	private Texture leverLeftImg;
+	private Texture money;
 	private Lever leverTop;
 	private Lever leverDown;
 	BitmapFont scoreBitmap;
 	private World world;
 	String pointrender;
+	static int heartBoxSize = 60;
 	
 	WorldRenderer(ThaitrainGame thaitrainGame,World world){
-		BGImg = new Texture("MAP.jpg");
+		BGImg = new Texture("MAPFULL.png");
 		this.world = world;
-		LeverRightImg = new Texture("leverRH.png");
-		LeverLeftImg = new Texture("leverLH.png");
+		leverRightImg = new Texture("leverRH.png");
+		leverLeftImg = new Texture("leverLH.png");
+		money = new Texture("money.png");
 		this.thaitrainGame = thaitrainGame;
 		trainRenderer = new TrainRenderer(thaitrainGame,world);
 		leverTop = world.getLeverTop();
@@ -34,17 +37,20 @@ public class WorldRenderer {
 		SpriteBatch batch = thaitrainGame.batch;
 		batch.begin();
 		batch.draw(BGImg,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		if(leverTop.Leverposition) {
-			batch.draw(LeverRightImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
+		if (leverTop.Leverposition) {
+			batch.draw(leverRightImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
 		}
 		else {
-			batch.draw(LeverLeftImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
+			batch.draw(leverLeftImg,(int)leverTop.getPosition().x,(int)leverTop.getPosition().y);
 		}
-		if(leverDown.Leverposition) {
-			batch.draw(LeverRightImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
+		if (leverDown.Leverposition) {
+			batch.draw(leverRightImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
 		}
 		else {
-			batch.draw(LeverLeftImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
+			batch.draw(leverLeftImg,(int)leverDown.getPosition().x,(int)leverDown.getPosition().y);
+		}
+		for(int i = 0;i<world.LIFE;i++) {
+			batch.draw(money,300 + (i * heartBoxSize),300);
 		}
 		pointrender = "POINT : " + world.POINT;
 		scoreBitmap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
